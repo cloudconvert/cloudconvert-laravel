@@ -1,5 +1,3 @@
-__WIP! Do not use yet!__
-
 cloudconvert-laravel
 =======================
 
@@ -84,6 +82,81 @@ Please check the [PHP SDK repository](https://github.com/cloudconvert/cloudconve
 ## Webhooks
 
 This package can help you handle the CloudConvert webhooks. Out of the box it will verify the CloudConvert signature of all incoming requests. You can easily define event subscribers when specific events hit your app.
+
+
+#### Route
+
+You can create your webhook in the [webhook settings](https://cloudconvert.com/dashboard/api/v2/webhooks) and point it to something like `https://your.app/webhook/cloudconvert`. Make sure to to configure the shown signing secret in the config file of this package. 
+
+In the routes file of your app you must pass that route to the `Route::cloudConvertWebhooks` macro:
+
+```php
+Route::cloudConvertWebhooks('webhook/cloudconvert');
+```
+
+Behind the scenes this will register a POST route to a controller provided by this package. Because CSRF token validation is not availble for this route, you must also add that route to the except array of the `VerifyCsrfToken` middleware:
+
+```php
+protected $except = [
+    'webhook/cloudconvert',
+];
+```
+
+#### Events
+
+Whenever a webhook event hits your app, the package fires a `cloudconvert-webhooks::<event-name>` event (for example `cloudconvert-webhooks::job.finished`).
+
+
+The payload of the event will be a `WebhookEvent` from the PHP SDK. An event subscriber in your app could look like this:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use CloudConvert\Models\WebhookEvent;
+use CloudConvert\Models\Job;
+use CloudConvert\Models\Task;
+use Illuminate\Support\Facades\Log;
+
+class CloudConvertEventListener
+{
+
+    public function onJobFinished(WebhookEvent $event) {
+        
+        $job = $event->getJob();
+        
+        $exportTask = $job->getTasks()->status(Task::STATUS_FINISHED)->name('my-export-task')[0];
+        
+        // $exportTask->getResult() ...
+        
+    }
+
+    public function onJobFailed(WebhookEvent $event) {
+        
+        $job = $event->getJob();
+        
+        $failingTask =  $job->getTasks()->status(Task::STATUS_ERROR)[0];
+        
+        Log::error('CloudConvert task failed: ' . $failingTask->getId());
+        
+    }
+
+    public function subscribe($events)
+    {
+        $events->listen(
+            'cloudconvert-webhooks::job.finished',
+            'App\Listeners\CloudConvertEventListener@onJobFinished'
+        );
+
+        $events->listen(
+            'cloudconvert-webhooks::job.failed',
+            'App\Listeners\CloudConvertEventListener@onJobFailed'
+        );
+    }
+
+}
+ ```
 
 Tests
 -----------------

@@ -5,6 +5,7 @@ namespace CloudConvert\Laravel\Providers;
 
 use CloudConvert\CloudConvert;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,11 @@ class CloudConvertServiceProvider extends ServiceProvider implements DeferrableP
             ], 'config');
         }
         $this->mergeConfigFrom(__DIR__ . '/../config/cloudconvert.php', 'cloudconvert');
+
+
+        Route::macro('cloudConvertWebhooks', function ($url) {
+            return Route::post($url, '\CloudConvert\Laravel\CloudConvertWebhooksController');
+        });
 
     }
 
