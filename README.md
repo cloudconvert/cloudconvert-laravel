@@ -102,13 +102,13 @@ This package can help you handle the CloudConvert webhooks. Out of the box it wi
 
 You can create your webhook in the [webhook settings](https://cloudconvert.com/dashboard/api/v2/webhooks) and point it to something like `https://your.app/webhook/cloudconvert`. Make sure to to configure the shown signing secret in the config file of this package. 
 
-In the routes file of your app you must pass that route to the `Route::cloudConvertWebhooks` macro:
+In the routes file of your app you must pass that route to a controller provided by this package.
 
 ```php
-Route::cloudConvertWebhooks('webhook/cloudconvert');
+Route::post('webhook/cloudconvert', '\CloudConvert\Laravel\CloudConvertWebhooksController');
 ```
 
-Behind the scenes this will register a POST route to a controller provided by this package. Because CSRF token validation is not availble for this route, you must also add that route to the except array of the `VerifyCsrfToken` middleware:
+Because CSRF token validation is not availble for this route, you must also add that route to the except array of the `VerifyCsrfToken` middleware:
 
 ```php
 protected $except = [

@@ -27,11 +27,6 @@ class CloudConvertServiceProvider extends ServiceProvider implements DeferrableP
         }
         $this->mergeConfigFrom(__DIR__ . '/../config/cloudconvert.php', 'cloudconvert');
 
-
-        Route::macro('cloudConvertWebhooks', function ($url) {
-            return Route::post($url, '\CloudConvert\Laravel\CloudConvertWebhooksController');
-        });
-
     }
 
     /**
