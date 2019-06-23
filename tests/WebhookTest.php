@@ -17,7 +17,7 @@ class WebhookTest extends TestCase
     {
         parent::setUp();
         Event::fake();
-        Route::cloudConvertWebhooks('webhook/cloudconvert');
+        Route::post('webhook/cloudconvert', '\CloudConvert\Laravel\CloudConvertWebhooksController');
         config(['cloudconvert.webhook_signing_secret' => 'secret']);
     }
 
