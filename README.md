@@ -73,6 +73,7 @@ use \CloudConvert\Models\Task;
 
 CloudConvert::jobs()->create(
     (new Job())
+    ->setTag('myjob-123')
     ->addTask(
         (new Task('import/url', 'import-my-file'))
             ->set('url','https://my-url')
@@ -140,7 +141,11 @@ class CloudConvertEventListener
         
         $job = $event->getJob();
         
-        $exportTask = $job->getTasks()->status(Task::STATUS_FINISHED)->name('my-export-task')[0];
+        $job->getTag(); // can be used to store an ID
+        
+        $exportTask = $job->getTasks()
+            ->status(Task::STATUS_FINISHED) // get the task with 'finished' status ...
+            ->name('my-export-task')[0];    // ... and with the name 'my-export-task'
         
         // $exportTask->getResult() ...
         
@@ -149,6 +154,8 @@ class CloudConvertEventListener
     public function onJobFailed(WebhookEvent $event) {
         
         $job = $event->getJob();
+        
+        $job->getTag(); // can be used to store an ID
         
         $failingTask =  $job->getTasks()->status(Task::STATUS_ERROR)[0];
         
