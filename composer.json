@@ -15,7 +15,7 @@
         "illuminate/support": "~5.8.0|^6.0",
         "illuminate/http": "~5.8.0|^6.0",
         "illuminate/routing": "~5.8.0|^6.0",
-        "cloudconvert/cloudconvert-php": "v3.x-dev",
+        "cloudconvert/cloudconvert-php": "^3.0.0",
         "symfony/psr-http-message-bridge": "^1.2",
         "zendframework/zend-diactoros": "^2.1"
     },
