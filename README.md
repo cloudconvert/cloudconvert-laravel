@@ -74,10 +74,58 @@ CloudConvert::jobs()->create(
         (new Task('export/url', 'export-my-file'))
             ->set('input', 'convert-my-file')
     )
-)
+);
 ```
 
 Please check the [PHP SDK repository](https://github.com/cloudconvert/cloudconvert-php/tree/v3) for the full documentation.
+
+
+## Uploading Files
+
+Uploads to CloudConvert are done via `import/upload` tasks (see the [docs](https://cloudconvert.com/api/v2/import#import-upload-tasks)). This SDK offers a convenient upload method:
+
+```php
+use \CloudConvert\Models\Job;
+
+$job = (new Job())
+    ->addTask(new Task('import/upload','upload-my-file'))
+    ->addTask(
+        (new Task('convert', 'convert-my-file'))
+            ->set('input', 'import-my-file')
+            ->set('output_format', 'pdf')
+    )
+    ->addTask(
+        (new Task('export/url', 'export-my-file'))
+            ->set('input', 'convert-my-file')
+    );
+
+$cloudconvert->jobs()->create($job);
+
+$uploadTask = $job->getTasks()->name('upload-my-file')[0];
+
+$inputStream = fopen(Storage::path('my/input.docx'), 'r');
+
+CloudConvert::tasks()->upload($uploadTask, $inputStream);
+```
+
+## Downloading Files
+
+CloudConvert can generate public URLs for using `export/url` tasks. You can use the PHP SDK to download the output files when the Job is finished.
+
+```php
+$cloudconvert->jobs()->wait($job); // Wait for job completion
+
+foreach ($job->getExportUrls() as $file) {
+
+    $source = $cloudconvert->getHttpTransport()->download($file->url)->detach();
+    $dest = fopen(Storage::path('out/' . $file->filename), 'w');
+    
+    stream_copy_to_stream($source, $dest);
+
+}
+```
+
+
 
 
 ## Webhooks
