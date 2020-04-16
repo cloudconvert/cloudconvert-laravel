@@ -77,7 +77,7 @@ CloudConvert::jobs()->create(
 );
 ```
 
-Please check the [PHP SDK repository](https://github.com/cloudconvert/cloudconvert-php/tree/v3) for the full documentation.
+Please check the [PHP SDK repository](https://github.com/cloudconvert/cloudconvert-php/tree/master) for the full documentation.
 
 
 ## Uploading Files
