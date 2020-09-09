@@ -17,6 +17,11 @@ You can install the package via composer:
 
     composer require cloudconvert/cloudconvert-laravel
 
+This package requires a HTTP client. It works both with Guzzle 6 and 7. If you are using Guzzle 6, you need an adapter:
+
+    composer require php-http/guzzle6-adapter
+
+Guzzle 7 works out of the box.
 
 Next you must publish the config file. 
 
@@ -101,7 +106,7 @@ $job = (new Job())
 
 $cloudconvert->jobs()->create($job);
 
-$uploadTask = $job->getTasks()->name('upload-my-file')[0];
+$uploadTask = $job->getTasks()->whereName('upload-my-file')[0];
 
 $inputStream = fopen(Storage::path('my/input.docx'), 'r');
 
@@ -178,8 +183,8 @@ class CloudConvertEventListener
         $job->getTag(); // can be used to store an ID
         
         $exportTask = $job->getTasks()
-            ->status(Task::STATUS_FINISHED) // get the task with 'finished' status ...
-            ->name('my-export-task')[0];    // ... and with the name 'my-export-task'
+            ->whereStatus(Task::STATUS_FINISHED) // get the task with 'finished' status ...
+            ->whereName('my-export-task')[0];    // ... and with the name 'my-export-task'
         
         // $exportTask->getResult() ...
         
@@ -191,7 +196,7 @@ class CloudConvertEventListener
         
         $job->getTag(); // can be used to store an ID
         
-        $failingTask =  $job->getTasks()->status(Task::STATUS_ERROR)[0];
+        $failingTask =  $job->getTasks()->whereStatus(Task::STATUS_ERROR)[0];
         
         Log::error('CloudConvert task failed: ' . $failingTask->getId());
         
