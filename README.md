@@ -1,8 +1,8 @@
 cloudconvert-laravel
 =======================
 
-> This is the official Laravel package for the [CloudConvert](https://cloudconvert.com/api/v2) _API v2_. It is not compatible with API v1!
-> This package depends on the [PHP SDK v3](https://github.com/cloudconvert/cloudconvert-php/tree/master).
+This is the official Laravel package for the [CloudConvert](https://cloudconvert.com/api/v2) _API v2_.
+This package depends on the [PHP SDK v3](https://github.com/cloudconvert/cloudconvert-php/tree/master).
 
 [![Tests](https://github.com/cloudconvert/cloudconvert-laravel/actions/workflows/run-tests.yml/badge.svg)](https://github.com/cloudconvert/cloudconvert-laravel/actions/workflows/run-tests.yml)
 [![Latest Stable Version](https://poser.pugx.org/cloudconvert/cloudconvert-laravel/v/stable)](https://packagist.org/packages/cloudconvert/cloudconvert-laravel)
