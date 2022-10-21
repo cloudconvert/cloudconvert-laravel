@@ -15,7 +15,7 @@
         "illuminate/support": "~5.8.0|^6.0|^7.0|^8.0|^9.0",
         "illuminate/http": "~5.8.0|^6.0|^7.0|^8.0|^9.0",
         "illuminate/routing": "~5.8.0|^6.0|^7.0|^8.0|^9.0",
-        "cloudconvert/cloudconvert-php": "^3.1.0",
+        "cloudconvert/cloudconvert-php": "^3.3.0",
         "symfony/psr-http-message-bridge": "^1.2|^2.0",
         "nyholm/psr7": "^1.2"
     },
