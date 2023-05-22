@@ -12,15 +12,11 @@ This package depends on the [PHP SDK v3](https://github.com/cloudconvert/cloudco
 ## Installation
 
 
-You can install the package via composer:
+You can install the package alongside Guzzle via composer:
 
-    composer require cloudconvert/cloudconvert-laravel
+    composer require cloudconvert/cloudconvert-laravel guzzlehttp/guzzle
 
-This package requires a HTTP client. It works both with Guzzle 6 and 7. If you are using Guzzle 6, you need an adapter:
-
-    composer require php-http/guzzle6-adapter
-
-Guzzle 7 works out of the box.
+This package is not tied to any specific HTTP client by using [PSR-7](https://www.php-fig.org/psr/psr-7/), [PSR-17](https://www.php-fig.org/psr/psr-17/), [PSR-18](https://www.php-fig.org/psr/psr-18/), and [HTTPlug](https://httplug.io/). Therefore, you will also need to install packages that provide [`psr/http-client-implementation`](https://packagist.org/providers/psr/http-client-implementation) and [`psr/http-factory-implementation`](https://packagist.org/providers/psr/http-factory-implementation) (for example Guzzle).
 
 Next you must publish the config file. 
 
